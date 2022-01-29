@@ -4,23 +4,20 @@ import { Group, Vector3 } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 class MockupModel extends Group {
-  constructor() {
+  constructor(home) {
     super();
 
-    this.home = {
-      position: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      rotation: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-    };
+    this.goingHome = false;
+
+    this.home = home;
 
     this.speed = {
+      x: 0,
+      y: 0,
+      z: 0,
+    };
+
+    this.rotSpeed = {
       x: 0,
       y: 0,
       z: 0,
@@ -31,6 +28,35 @@ class MockupModel extends Group {
       y: 0,
       z: 0,
     };
+  }
+
+  homeAnim() {
+    if (!this.goingHome) {
+      this.goingHome = true;
+
+      const rT = 10;
+      this.speed.x = (this.home.position.x - this.position.x) / rT;
+      this.speed.y = (this.home.position.y - this.position.y) / rT;
+      this.speed.z = (this.home.position.z - this.position.z) / rT;
+
+      this.rotSpeed.x = (this.home.rotation.x - this.rotation.x) / rT;
+      this.rotSpeed.y = (this.home.rotation.y - this.rotation.y) / rT;
+      this.rotSpeed.z = (this.home.rotation.z - this.rotation.z) / rT;
+
+      setTimeout(() => {
+        this.goingHome = false;
+      }, rT);
+    }
+
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
+    this.position.z += this.speed.z;
+
+    this.rotation.x += this.rotSpeed.x;
+    this.rotation.y += this.rotSpeed.y;
+    this.rotation.z += this.rotSpeed.z;
+
+    return !this.goingHome;
   }
 
   floatAnim() {
@@ -77,7 +103,7 @@ var script = {
     },
   },
   setup(props) {
-    const animation = ref('float');
+    const animation = ref('home');
     const container = ref(null);
     let camera;
     let scene;
@@ -175,10 +201,19 @@ var script = {
           );
         };
 
-        phone = new MockupModel();
+        phone = new MockupModel({
+          position: {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+          rotation: {
+            x: -0.2,
+            y: 0.3,
+            z: 0.06,
+          },
+        });
         phone.acceleration.y = -0.01;
-        phone.rotation.x = -0.1;
-        phone.rotation.y = 0.5;
         scene.add(phone);
         screenInit();
         bodyInit();
@@ -206,6 +241,13 @@ var script = {
             phone.lookAtAnim(mouseX / 3, mouseY / 3, camera.position.z);
             break;
 
+          case 'home':
+            if (phone.homeAnim()) {
+              phone.acceleration.y = -0.01;
+              animation.value = 'float';
+            }
+            break;
+
           default:
             phone.floatAnim();
         }
@@ -219,8 +261,8 @@ var script = {
     }
 
     function handleMouseLeave() {
-      phone.acceleration.y = -0.01;
-      animation.value = 'float';
+      // phone.acceleration.y = -0.01;
+      animation.value = 'home';
     }
 
     function handleMouseMove(event) {
