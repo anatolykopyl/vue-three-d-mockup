@@ -3,6 +3,7 @@
     ref="container"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    @mousemove="handleMouseMove"
   />
 </template>
 
@@ -33,6 +34,8 @@ export default {
     let scene;
     let phone;
     let renderer;
+    let mouseX = 0;
+    let mouseY = 0;
 
     function init() {
       const environmentInit = () => {
@@ -141,6 +144,10 @@ export default {
             phone.rotateAnim();
             break;
 
+          case 'lookAt':
+            phone.lookAtAnim(mouseX, mouseY, camera);
+            break;
+
           default:
             phone.floatAnim();
         }
@@ -150,12 +157,18 @@ export default {
     }
 
     function handleMouseEnter() {
-      animation.value = 'rotate';
+      animation.value = 'lookAt';
     }
 
     function handleMouseLeave() {
       phone.acceleration.y = -0.02;
       animation.value = 'float';
+    }
+
+    function handleMouseMove(event) {
+      const rect = container.value.getBoundingClientRect();
+      mouseX = event.clientX - rect.left - rect.width / 2;
+      mouseY = -(event.clientY - rect.top - rect.height / 2);
     }
 
     onMounted(() => {
@@ -168,6 +181,7 @@ export default {
       container,
       handleMouseEnter,
       handleMouseLeave,
+      handleMouseMove,
     };
   },
 };

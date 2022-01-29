@@ -1,4 +1,4 @@
-import { Group } from 'three';
+import { Group, Vector3 } from 'three';
 
 export default class MockupModel extends Group {
   constructor() {
@@ -34,5 +34,13 @@ export default class MockupModel extends Group {
 
   rotateAnim() {
     this.rotation.y += 0.02;
+  }
+
+  lookAtAnim(x, y, camera) {
+    const target = new Vector3();
+    target.x = x;
+    target.y = y;
+    target.z = camera.position.z;
+    this.lookAt(target);
   }
 }
