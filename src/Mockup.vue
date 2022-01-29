@@ -157,21 +157,22 @@ export default {
       currentTime *= 0.001;
       const deltaTime = currentTime - previousTime;
       previousTime = currentTime;
+
       requestAnimationFrame(animate);
 
       if (phone) {
-        phone.anim(deltaTime, { mouseX, mouseY, cameraZ: camera.position.z });
+        phone.animation(deltaTime, { x: mouseX, y: mouseY, z: camera.position.z });
       }
 
       renderer.render(scene, camera);
     }
 
     function handleMouseEnter() {
-      if (phone) { phone.animation = 'lookAt'; }
+      if (phone) { phone.animation = phone.lookAtAnim; }
     }
 
     function handleMouseLeave() {
-      if (phone) { phone.animation = 'home'; }
+      if (phone) { phone.animation = phone.homeAnim; }
     }
 
     function handleMouseMove(event) {

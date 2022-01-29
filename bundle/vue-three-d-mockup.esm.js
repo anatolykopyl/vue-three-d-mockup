@@ -7,7 +7,7 @@ class MockupModel extends Group {
   constructor(home) {
     super();
 
-    this.animation = 'float';
+    this.animation = this.floatAnim;
     this.goingHome = false;
 
     this.home = home;
@@ -73,7 +73,7 @@ class MockupModel extends Group {
 
   startFloat() {
     this.acceleration.y = -0.01;
-    this.animation = 'float';
+    this.animation = this.floatAnim;
   }
 
   floatAnim() {
@@ -96,31 +96,12 @@ class MockupModel extends Group {
     this.rotation.y += 0.02;
   }
 
-  lookAtAnim(x, y, cameraZ) {
+  lookAtAnim(dt, { x, y, z }) {
     const target = new Vector3();
     target.x = x;
     target.y = y;
-    target.z = cameraZ;
+    target.z = z;
     this.lookAt(target);
-  }
-
-  anim(dt, { mouseX, mouseY, cameraZ }) {
-    switch (this.animation) {
-      case 'rotate':
-        this.rotateAnim();
-        break;
-
-      case 'lookAt':
-        this.lookAtAnim(mouseX / 3, mouseY / 3, cameraZ);
-        break;
-
-      case 'home':
-        this.homeAnim(dt);
-        break;
-
-      default:
-        this.floatAnim();
-    }
   }
 }
 
@@ -268,21 +249,22 @@ var script = {
       currentTime *= 0.001;
       const deltaTime = currentTime - previousTime;
       previousTime = currentTime;
+
       requestAnimationFrame(animate);
 
       if (phone) {
-        phone.anim(deltaTime, { mouseX, mouseY, cameraZ: camera.position.z });
+        phone.animation(deltaTime, { x: mouseX, y: mouseY, z: camera.position.z });
       }
 
       renderer.render(scene, camera);
     }
 
     function handleMouseEnter() {
-      if (phone) { phone.animation = 'lookAt'; }
+      if (phone) { phone.animation = phone.lookAtAnim; }
     }
 
     function handleMouseLeave() {
-      if (phone) { phone.animation = 'home'; }
+      if (phone) { phone.animation = phone.homeAnim; }
     }
 
     function handleMouseMove(event) {

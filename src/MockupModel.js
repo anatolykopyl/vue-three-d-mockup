@@ -4,7 +4,7 @@ export default class MockupModel extends Group {
   constructor(home) {
     super();
 
-    this.animation = 'float';
+    this.animation = this.floatAnim;
     this.goingHome = false;
 
     this.home = home;
@@ -70,7 +70,7 @@ export default class MockupModel extends Group {
 
   startFloat() {
     this.acceleration.y = -0.01;
-    this.animation = 'float';
+    this.animation = this.floatAnim;
   }
 
   floatAnim() {
@@ -93,30 +93,11 @@ export default class MockupModel extends Group {
     this.rotation.y += 0.02;
   }
 
-  lookAtAnim(x, y, cameraZ) {
+  lookAtAnim(dt, { x, y, z }) {
     const target = new Vector3();
     target.x = x;
     target.y = y;
-    target.z = cameraZ;
+    target.z = z;
     this.lookAt(target);
-  }
-
-  anim(dt, { mouseX, mouseY, cameraZ }) {
-    switch (this.animation) {
-      case 'rotate':
-        this.rotateAnim();
-        break;
-
-      case 'lookAt':
-        this.lookAtAnim(mouseX / 3, mouseY / 3, cameraZ);
-        break;
-
-      case 'home':
-        this.homeAnim(dt);
-        break;
-
-      default:
-        this.floatAnim();
-    }
   }
 }
