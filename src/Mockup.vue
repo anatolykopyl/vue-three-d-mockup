@@ -28,7 +28,7 @@ export default {
     },
   },
   setup(props) {
-    const animation = ref('float');
+    const animation = ref('home');
     const container = ref(null);
     let camera;
     let scene;
@@ -126,10 +126,19 @@ export default {
           );
         };
 
-        phone = new MockupModel();
+        phone = new MockupModel({
+          position: {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+          rotation: {
+            x: -0.2,
+            y: 0.3,
+            z: 0.06,
+          },
+        });
         phone.acceleration.y = -0.01;
-        phone.rotation.x = -0.1;
-        phone.rotation.y = 0.5;
         scene.add(phone);
         screenInit();
         bodyInit();
@@ -157,6 +166,13 @@ export default {
             phone.lookAtAnim(mouseX / 3, mouseY / 3, camera.position.z);
             break;
 
+          case 'home':
+            if (phone.homeAnim()) {
+              phone.acceleration.y = -0.01;
+              animation.value = 'float';
+            }
+            break;
+
           default:
             phone.floatAnim();
         }
@@ -170,8 +186,8 @@ export default {
     }
 
     function handleMouseLeave() {
-      phone.acceleration.y = -0.01;
-      animation.value = 'float';
+      // phone.acceleration.y = -0.01;
+      animation.value = 'home';
     }
 
     function handleMouseMove(event) {
