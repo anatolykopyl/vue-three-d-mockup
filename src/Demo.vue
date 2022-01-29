@@ -1,16 +1,18 @@
 <template>
-  <Mockup
-    class="mockup"
-    screenImg="screen.png"
-  />
+  <div>
+    <Mockup
+      class="mockup"
+      screenImg="screen.png"
+    />
+  </div>
 </template>
 
 <script>
-import Mockup from './Mockup.vue';
+import { defineAsyncComponent } from 'vue';
 
 export default {
   components: {
-    Mockup,
+    Mockup: defineAsyncComponent(() => import('./Mockup.vue')),
   },
 };
 </script>

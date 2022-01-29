@@ -17,9 +17,23 @@ $ npm install github:anatolykopyl/vue-three-d-mockup
 />
 ```
 
+#### Use as an async component (the 3d model is quite large so this provides a significant performance boost):
 ```js
 <script>
-import Mockup from 'vue-tree-d-mockup'
+import { defineAsyncComponent } from 'vue';
+
+export default {
+  components: {
+    Mockup: defineAsyncComponent(() => import('vue-three-d-mockup')),
+  }
+}
+</script>
+```
+
+#### Or normally:
+```js
+<script>
+import Mockup from 'vue-three-d-mockup';
 
 export default {
   components: {
