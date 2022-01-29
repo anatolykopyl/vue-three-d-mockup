@@ -9,6 +9,8 @@ import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import phoneObj from './assets/iphone.obj';
 
+import rotateAnimation from './animations/rotate';
+
 export default {
   name: 'Mockup',
   props: {
@@ -44,47 +46,93 @@ export default {
       };
 
       const phoneInit = () => {
-        const loader = new OBJLoader();
+        const screenInit = () => {
+          const scale = 6;
+          const width = scale * 9; const height = scale * 19.3;
 
-        const texture = new THREE.TextureLoader().load(props.screenImg);
-        const material = new THREE.MeshLambertMaterial({ map: texture });
-        const scale = 6;
-        const screen = new THREE.Mesh(
-          new THREE.PlaneGeometry(scale * 9, scale * 19.5), material,
-        );
-        screen.translateZ(6);
-        screen.translateX(1);
+          function roundedPlane() {
+            const x = 1; const y = 1;
+            const radius = 8;
+            const shape = new THREE.Shape();
+
+            shape.moveTo(x, y + radius);
+            shape.lineTo(x, y + height - radius);
+            shape.quadraticCurveTo(x, y + height, x + radius, y + height);
+            shape.lineTo(x + width - radius, y + height);
+            shape.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
+            shape.lineTo(x + width, y + radius);
+            shape.quadraticCurveTo(x + width, y, x + width - radius, y);
+            shape.lineTo(x + radius, y);
+            shape.quadraticCurveTo(x, y, x, y + radius);
+
+            return new THREE.ShapeBufferGeometry(shape);
+          }
+
+          // const geometry = new THREE.PlaneGeometry(width, height);
+          const geometry = roundedPlane();
+
+          const loader = new THREE.TextureLoader();
+          const texture = loader.load(props.screenImg);
+
+          const material = new THREE.MeshLambertMaterial({ map: texture });
+          const screen = new THREE.Mesh(geometry, material);
+
+          const recomputeUVs = () => {
+            const box = new THREE.Box3().setFromObject(screen);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const vec3 = new THREE.Vector3();
+            const attPos = screen.geometry.attributes.position;
+            const attUv = screen.geometry.attributes.uv;
+            for (let i = 0; i < attPos.count; i += 1) {
+              vec3.fromBufferAttribute(attPos, i);
+              attUv.setXY(i,
+                (vec3.x - box.min.x) / size.x,
+                (vec3.y - box.min.y) / size.y);
+            }
+            // attUv.needsUpdate = true;
+          };
+
+          recomputeUVs();
+
+          screen.translateX(-width / 2);
+          screen.translateY(-height / 2);
+          screen.translateZ(6);
+          phone.add(screen);
+        };
+
+        const bodyInit = () => {
+          const loader = new OBJLoader();
+          loader.load(
+            phoneObj,
+            (body) => {
+              body.position.y = -60;
+              phone.add(body);
+              scene.add(phone);
+            },
+          );
+        };
 
         phone = new THREE.Group();
-        phone.add(screen);
-
-        loader.load(
-          phoneObj,
-          (body) => {
-            body.position.y = -60;
-            phone.add(body);
-            scene.add(phone);
-          },
-        );
+        screenInit();
+        bodyInit();
       };
 
       environmentInit();
       phoneInit();
 
-      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(container.value.clientWidth, container.value.clientHeight);
       container.value.appendChild(renderer.domElement);
     }
 
-    function idleAnimation() {
-      phone.rotation.y += 0.02;
-    }
-
     function animate() {
       requestAnimationFrame(animate);
+
       if (phone) {
-        idleAnimation();
+        phone = rotateAnimation(phone);
       }
+
       renderer.render(scene, camera);
     }
 
