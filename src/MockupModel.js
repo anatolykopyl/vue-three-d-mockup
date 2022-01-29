@@ -4,9 +4,16 @@ export default class MockupModel extends Group {
   constructor(home) {
     super();
 
+    this.animation = 'float';
     this.goingHome = false;
 
     this.home = home;
+    this.position.x = this.home.position.x;
+    this.position.y = this.home.position.z;
+    this.position.z = this.home.position.z;
+    this.rotation.x = this.home.rotation.x;
+    this.rotation.y = this.home.rotation.y;
+    this.rotation.z = this.home.rotation.z;
 
     this.speed = {
       x: 0,
@@ -27,11 +34,11 @@ export default class MockupModel extends Group {
     };
   }
 
-  homeAnim() {
+  homeAnim(dt) {
     if (!this.goingHome) {
       this.goingHome = true;
 
-      const rT = 10;
+      const rT = 1;
       this.speed.x = (this.home.position.x - this.position.x) / rT;
       this.speed.y = (this.home.position.y - this.position.y) / rT;
       this.speed.z = (this.home.position.z - this.position.z) / rT;
@@ -42,18 +49,22 @@ export default class MockupModel extends Group {
 
       setTimeout(() => {
         this.goingHome = false;
-      }, rT);
+        this.startFloat();
+      }, rT * 1000);
     }
 
-    this.position.x += this.speed.x;
-    this.position.y += this.speed.y;
-    this.position.z += this.speed.z;
+    this.position.x += this.speed.x * dt;
+    this.position.y += this.speed.y * dt;
+    this.position.z += this.speed.z * dt;
 
-    this.rotation.x += this.rotSpeed.x;
-    this.rotation.y += this.rotSpeed.y;
-    this.rotation.z += this.rotSpeed.z;
+    this.rotation.x += this.rotSpeed.x * dt;
+    this.rotation.y += this.rotSpeed.y * dt;
+    this.rotation.z += this.rotSpeed.z * dt;
+  }
 
-    return !this.goingHome;
+  startFloat() {
+    this.acceleration.y = -0.01;
+    this.animation = 'float';
   }
 
   floatAnim() {
@@ -82,5 +93,24 @@ export default class MockupModel extends Group {
     target.y = y;
     target.z = cameraZ;
     this.lookAt(target);
+  }
+
+  anim(dt, { mouseX, mouseY, cameraZ }) {
+    switch (this.animation) {
+      case 'rotate':
+        this.rotateAnim();
+        break;
+
+      case 'lookAt':
+        this.lookAtAnim(mouseX / 3, mouseY / 3, cameraZ);
+        break;
+
+      case 'home':
+        this.homeAnim(dt);
+        break;
+
+      default:
+        this.floatAnim();
+    }
   }
 }

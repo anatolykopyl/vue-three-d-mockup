@@ -28,7 +28,6 @@ export default {
     },
   },
   setup(props) {
-    const animation = ref('home');
     const container = ref(null);
     let camera;
     let scene;
@@ -138,7 +137,6 @@ export default {
             z: 0.06,
           },
         });
-        phone.acceleration.y = -0.01;
         scene.add(phone);
         screenInit();
         bodyInit();
@@ -153,41 +151,26 @@ export default {
       container.value.appendChild(renderer.domElement);
     }
 
-    function animate() {
+    let previousTime = 0;
+    function animate(currentTime) {
+      currentTime *= 0.001;
+      const deltaTime = currentTime - previousTime;
+      previousTime = currentTime;
       requestAnimationFrame(animate);
 
       if (phone) {
-        switch (animation.value) {
-          case 'rotate':
-            phone.rotateAnim();
-            break;
-
-          case 'lookAt':
-            phone.lookAtAnim(mouseX / 3, mouseY / 3, camera.position.z);
-            break;
-
-          case 'home':
-            if (phone.homeAnim()) {
-              phone.acceleration.y = -0.01;
-              animation.value = 'float';
-            }
-            break;
-
-          default:
-            phone.floatAnim();
-        }
+        phone.anim(deltaTime, { mouseX, mouseY, cameraZ: camera.position.z });
       }
 
       renderer.render(scene, camera);
     }
 
     function handleMouseEnter() {
-      animation.value = 'lookAt';
+      phone.animation = 'lookAt';
     }
 
     function handleMouseLeave() {
-      // phone.acceleration.y = -0.01;
-      animation.value = 'home';
+      phone.animation = 'home';
     }
 
     function handleMouseMove(event) {
@@ -198,11 +181,10 @@ export default {
 
     onMounted(() => {
       init();
-      animate();
+      animate(0);
     });
 
     return {
-      animation,
       container,
       handleMouseEnter,
       handleMouseLeave,
