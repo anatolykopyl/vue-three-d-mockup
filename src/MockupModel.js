@@ -8,7 +8,10 @@ export default class MockupModel extends Group {
     this.goingHome = false;
 
     this.home = home;
+    this.reset();
+  }
 
+  reset() {
     this.position.x = this.home.position.x;
     this.position.y = this.home.position.y;
     this.position.z = this.home.position.z;
@@ -51,6 +54,7 @@ export default class MockupModel extends Group {
 
       setTimeout(() => {
         this.goingHome = false;
+        this.reset();
         this.startFloat();
       }, rT * 1000);
     }
