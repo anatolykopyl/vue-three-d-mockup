@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Mockup from './Mockup.vue';
+import Mockup from '../bundle/vue-three-d-mockup.esm';
 
 export default {
   components: {

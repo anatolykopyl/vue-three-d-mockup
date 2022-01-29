@@ -114,9 +114,14 @@ export default {
           loader.load(
             phoneObj,
             (body) => {
+              body.traverse((child) => {
+                if (child instanceof THREE.Mesh) {
+                  child.material = new THREE.MeshLambertMaterial();
+                }
+              });
+
               body.position.y = -60;
               phone.add(body);
-              scene.add(phone);
             },
           );
         };
@@ -125,6 +130,7 @@ export default {
         phone.acceleration.y = -0.01;
         phone.rotation.x = -0.1;
         phone.rotation.y = 0.5;
+        scene.add(phone);
         screenInit();
         bodyInit();
       };
