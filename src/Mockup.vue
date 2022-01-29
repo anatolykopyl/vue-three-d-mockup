@@ -1,5 +1,9 @@
 <template>
-  <div ref="container" />
+  <div
+    ref="container"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+  />
 </template>
 
 <script>
@@ -7,9 +11,8 @@ import { ref, onMounted } from 'vue';
 
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import MockupModel from './MockupModel';
 import phoneObj from './assets/iphone.obj';
-
-import rotateAnimation from './animations/rotate';
 
 export default {
   name: 'Mockup',
@@ -24,7 +27,7 @@ export default {
     },
   },
   setup(props) {
-    const idle = ref(true);
+    const animation = ref('float');
     const container = ref(null);
     let camera;
     let scene;
@@ -113,7 +116,10 @@ export default {
           );
         };
 
-        phone = new THREE.Group();
+        phone = new MockupModel();
+        phone.acceleration.y = -0.02;
+        phone.rotation.x = -0.1;
+        phone.rotation.y = 0.5;
         screenInit();
         bodyInit();
       };
@@ -130,10 +136,26 @@ export default {
       requestAnimationFrame(animate);
 
       if (phone) {
-        phone = rotateAnimation(phone);
+        switch (animation.value) {
+          case 'rotate':
+            phone.rotateAnim();
+            break;
+
+          default:
+            phone.floatAnim();
+        }
       }
 
       renderer.render(scene, camera);
+    }
+
+    function handleMouseEnter() {
+      animation.value = 'rotate';
+    }
+
+    function handleMouseLeave() {
+      phone.acceleration.y = -0.02;
+      animation.value = 'float';
     }
 
     onMounted(() => {
@@ -142,8 +164,10 @@ export default {
     });
 
     return {
-      idle,
+      animation,
       container,
+      handleMouseEnter,
+      handleMouseLeave,
     };
   },
 };
