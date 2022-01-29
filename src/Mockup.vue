@@ -50,8 +50,8 @@ export default {
         const screen = new THREE.Mesh(
           new THREE.PlaneGeometry(scale * 9, scale * 19.5), material,
         );
-        screen.material.side = THREE.DoubleSide;
         screen.translateZ(6);
+        screen.translateX(1);
 
         this.phone = new THREE.Group();
         this.phone.add(screen);
