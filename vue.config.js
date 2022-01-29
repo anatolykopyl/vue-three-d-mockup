@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/vue-three-d-mockup/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/vue-three-d-mockup/' : '/',
   chainWebpack: (config) => {
     config.module
       .rule('file-loader')
