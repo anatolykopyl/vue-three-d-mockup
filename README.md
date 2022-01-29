@@ -2,6 +2,12 @@
 
 Check out the [demo](https://anatolykopyl.github.io/vue-three-d-mockup/)
 
+## Installation
+
+```
+$ npm install github:anatolykopyl/vue-three-d-mockup
+```
+
 ## Usage
 
 ```html
