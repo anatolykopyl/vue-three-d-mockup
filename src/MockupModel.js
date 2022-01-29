@@ -18,14 +18,14 @@ export default class MockupModel extends Group {
   }
 
   floatAnim() {
-    const maxSpeed = 0.5;
+    const maxSpeed = 0.1;
 
     if (this.position.y < -2) {
-      this.acceleration.y = 0.02;
+      this.acceleration.y = 0.01;
     }
 
     if (this.position.y > 2) {
-      this.acceleration.y = -0.02;
+      this.acceleration.y = -0.01;
     }
 
     this.speed.y = Math.min(this.speed.y + this.acceleration.y, maxSpeed);
@@ -36,11 +36,11 @@ export default class MockupModel extends Group {
     this.rotation.y += 0.02;
   }
 
-  lookAtAnim(x, y, camera) {
+  lookAtAnim(x, y, cameraZ) {
     const target = new Vector3();
     target.x = x;
     target.y = y;
-    target.z = camera.position.z;
+    target.z = cameraZ;
     this.lookAt(target);
   }
 }

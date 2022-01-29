@@ -79,8 +79,10 @@ export default {
 
           const loader = new THREE.TextureLoader();
           const texture = loader.load(props.screenImg);
+          texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
           const material = new THREE.MeshLambertMaterial({ map: texture });
+          // material.map.minFilter = THREE.LinearFilter;
           const screen = new THREE.Mesh(geometry, material);
 
           const recomputeUVs = () => {
@@ -120,18 +122,19 @@ export default {
         };
 
         phone = new MockupModel();
-        phone.acceleration.y = -0.02;
+        phone.acceleration.y = -0.01;
         phone.rotation.x = -0.1;
         phone.rotation.y = 0.5;
         screenInit();
         bodyInit();
       };
 
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.value.clientWidth, container.value.clientHeight);
+
       environmentInit();
       phoneInit();
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(container.value.clientWidth, container.value.clientHeight);
       container.value.appendChild(renderer.domElement);
     }
 
@@ -145,7 +148,7 @@ export default {
             break;
 
           case 'lookAt':
-            phone.lookAtAnim(mouseX, mouseY, camera);
+            phone.lookAtAnim(mouseX / 3, mouseY / 3, camera.position.z);
             break;
 
           default:
@@ -161,7 +164,7 @@ export default {
     }
 
     function handleMouseLeave() {
-      phone.acceleration.y = -0.02;
+      phone.acceleration.y = -0.01;
       animation.value = 'float';
     }
 
