@@ -13,6 +13,7 @@ import { ref, onMounted } from 'vue';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import MockupModel from './MockupModel';
+import roundedPlane from './utils/roundedPlane';
 import phoneObj from './assets/iphone.obj';
 
 export default {
@@ -58,27 +59,10 @@ export default {
         const screenInit = () => {
           const scale = 6;
           const width = scale * 9; const height = scale * 19.3;
-
-          function roundedPlane() {
-            const x = 1; const y = 1;
-            const radius = 8;
-            const shape = new THREE.Shape();
-
-            shape.moveTo(x, y + radius);
-            shape.lineTo(x, y + height - radius);
-            shape.quadraticCurveTo(x, y + height, x + radius, y + height);
-            shape.lineTo(x + width - radius, y + height);
-            shape.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
-            shape.lineTo(x + width, y + radius);
-            shape.quadraticCurveTo(x + width, y, x + width - radius, y);
-            shape.lineTo(x + radius, y);
-            shape.quadraticCurveTo(x, y, x, y + radius);
-
-            return new THREE.ShapeBufferGeometry(shape);
-          }
+          const radius = 8;
 
           // const geometry = new THREE.PlaneGeometry(width, height);
-          const geometry = roundedPlane();
+          const geometry = roundedPlane(width, height, radius);
 
           const loader = new THREE.TextureLoader();
           const texture = loader.load(props.screenImg);
