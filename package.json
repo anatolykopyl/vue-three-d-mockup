@@ -2,13 +2,22 @@
   "name": "vue-three-d-mockup",
   "version": "0.1.0",
   "private": true,
+  "author": "Anatoly Kopyl <akopyl@radner.ru>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-bundle": "vue-cli-service build --target lib --name vue-three-d-mockup ./src/index.js",
     "lint": "vue-cli-service lint"
   },
+  "files": [
+    "dist/*",
+    "src/*",
+    "*.json",
+    "*.js"
+  ],
   "dependencies": {
     "core-js": "^3.6.5",
+    "three": "^0.137.5",
     "vue": "^3.0.0"
   },
   "devDependencies": {
@@ -20,6 +29,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-vue": "^7.0.0",
+    "file-loader": "^6.2.0"
   }
 }
