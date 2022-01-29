@@ -24,7 +24,11 @@ export default {
     },
     lightClr: {
       type: String,
-      default: 'hsl(0, 100%, 100%)',
+      default: 'white',
+    },
+    phoneClr: {
+      type: String,
+      default: 'white',
     },
   },
   setup(props) {
@@ -115,7 +119,7 @@ export default {
             (body) => {
               body.traverse((child) => {
                 if (child instanceof THREE.Mesh) {
-                  child.material = new THREE.MeshLambertMaterial();
+                  child.material = new THREE.MeshLambertMaterial({ color: props.phoneClr });
                 }
               });
 

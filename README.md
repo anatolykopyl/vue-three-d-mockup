@@ -46,3 +46,4 @@ export default {
 ### props:
 - `screenImg`: path to image that will be displayed on the phones screen
 - `lightClr`: color of the light in the environment
+- `phoneClr`: color of the phone
