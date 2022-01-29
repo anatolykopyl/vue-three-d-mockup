@@ -1,8 +1,10 @@
 <template>
-  <div ref="canvas" />
+  <div ref="container" />
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
+
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import phoneObj from './assets/iphone.obj';
@@ -19,32 +21,32 @@ export default {
       default: 'hsl(0, 100%, 100%)',
     },
   },
-  data() {
-    return {
-      idle: true,
-    };
-  },
-  methods: {
-    init() {
-      const container = this.$refs.canvas;
+  setup(props) {
+    const idle = ref(true);
+    const container = ref(null);
+    let camera;
+    let scene;
+    let phone;
+    let renderer;
 
+    function init() {
       const environmentInit = () => {
-        this.camera = new THREE.PerspectiveCamera(
-          45, container.clientWidth / container.clientHeight, 0.1, 10000,
+        camera = new THREE.PerspectiveCamera(
+          45, container.value.clientWidth / container.value.clientHeight, 0.1, 10000,
         );
-        this.scene = new THREE.Scene();
+        scene = new THREE.Scene();
 
-        const light = new THREE.DirectionalLight(this.lightClr);
-        this.scene.add(light);
+        const light = new THREE.DirectionalLight(props.lightClr);
+        scene.add(light);
 
         light.position.set(0, 0, 300);
-        this.camera.position.set(0, 0, 200);
+        camera.position.set(0, 0, 200);
       };
 
       const phoneInit = () => {
         const loader = new OBJLoader();
 
-        const texture = new THREE.TextureLoader().load(this.screenImg);
+        const texture = new THREE.TextureLoader().load(props.screenImg);
         const material = new THREE.MeshLambertMaterial({ map: texture });
         const scale = 6;
         const screen = new THREE.Mesh(
@@ -53,15 +55,15 @@ export default {
         screen.translateZ(6);
         screen.translateX(1);
 
-        this.phone = new THREE.Group();
-        this.phone.add(screen);
+        phone = new THREE.Group();
+        phone.add(screen);
 
         loader.load(
           phoneObj,
           (body) => {
             body.position.y = -60;
-            this.phone.add(body);
-            this.scene.add(this.phone);
+            phone.add(body);
+            scene.add(phone);
           },
         );
       };
@@ -69,27 +71,32 @@ export default {
       environmentInit();
       phoneInit();
 
-      this.renderer = new THREE.WebGLRenderer({ antialias: true });
-      this.renderer.setSize(container.clientWidth, container.clientHeight);
-      container.appendChild(this.renderer.domElement);
-    },
-    animate() {
-      requestAnimationFrame(this.animate);
-      if (this.phone) {
-        this.idleAnimation();
-      }
-      this.renderer.render(this.scene, this.camera);
-    },
-    idleAnimation() {
-      this.phone.rotation.y += 0.02;
-    },
-    followAnimation() {
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(container.value.clientWidth, container.value.clientHeight);
+      container.value.appendChild(renderer.domElement);
+    }
 
-    },
-  },
-  mounted() {
-    this.init();
-    this.animate();
+    function idleAnimation() {
+      phone.rotation.y += 0.02;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (phone) {
+        idleAnimation();
+      }
+      renderer.render(scene, camera);
+    }
+
+    onMounted(() => {
+      init();
+      animate();
+    });
+
+    return {
+      idle,
+      container,
+    };
   },
 };
 </script>
