@@ -11,9 +11,11 @@ class MockupModel extends Group {
     this.goingHome = false;
 
     this.home = home;
+
     this.position.x = this.home.position.x;
-    this.position.y = this.home.position.z;
+    this.position.y = this.home.position.y;
     this.position.z = this.home.position.z;
+
     this.rotation.x = this.home.rotation.x;
     this.rotation.y = this.home.rotation.y;
     this.rotation.z = this.home.rotation.z;
@@ -242,6 +244,7 @@ var script = {
             z: 0.06,
           },
         });
+        phone.startFloat();
         scene.add(phone);
         screenInit();
         bodyInit();
@@ -271,11 +274,11 @@ var script = {
     }
 
     function handleMouseEnter() {
-      phone.animation = 'lookAt';
+      if (phone) { phone.animation = 'lookAt'; }
     }
 
     function handleMouseLeave() {
-      phone.animation = 'home';
+      if (phone) { phone.animation = 'home'; }
     }
 
     function handleMouseMove(event) {

@@ -8,9 +8,11 @@ export default class MockupModel extends Group {
     this.goingHome = false;
 
     this.home = home;
+
     this.position.x = this.home.position.x;
-    this.position.y = this.home.position.z;
+    this.position.y = this.home.position.y;
     this.position.z = this.home.position.z;
+
     this.rotation.x = this.home.rotation.x;
     this.rotation.y = this.home.rotation.y;
     this.rotation.z = this.home.rotation.z;

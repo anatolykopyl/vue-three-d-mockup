@@ -137,6 +137,7 @@ export default {
             z: 0.06,
           },
         });
+        phone.startFloat();
         scene.add(phone);
         screenInit();
         bodyInit();
@@ -166,11 +167,11 @@ export default {
     }
 
     function handleMouseEnter() {
-      phone.animation = 'lookAt';
+      if (phone) { phone.animation = 'lookAt'; }
     }
 
     function handleMouseLeave() {
-      phone.animation = 'home';
+      if (phone) { phone.animation = 'home'; }
     }
 
     function handleMouseMove(event) {
