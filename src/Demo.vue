@@ -11,7 +11,7 @@
       />
       <Mockup
         class="mockup"
-        screen="screen.png"
+        :screen="require('./assets/screen.png')"
         :rotation="{
           x: -0.2,
           y: -0.3,
