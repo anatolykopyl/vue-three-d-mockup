@@ -22,7 +22,7 @@
     </div>
 
     <video
-      src="screen.mp4"
+      src="@/assets/screen.mp4"
       ref="video"
       @canplay="vidReady = true"
       muted
