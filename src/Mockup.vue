@@ -19,10 +19,7 @@ import phoneObj from './assets/iphone.obj';
 export default {
   name: 'Mockup',
   props: {
-    screenImg: {
-      type: String,
-    },
-    video: {
+    screen: {
       type: null,
     },
     lightClr: {
@@ -76,11 +73,11 @@ export default {
 
           let texture;
 
-          if (props.screenImg) {
+          if (typeof props.screen === 'string') {
             const loader = new THREE.TextureLoader();
-            texture = loader.load(props.screenImg);
+            texture = loader.load(props.screen);
           } else {
-            texture = new THREE.VideoTexture(props.video);
+            texture = new THREE.VideoTexture(props.screen);
           }
 
           texture.anisotropy = renderer.capabilities.getMaxAnisotropy();

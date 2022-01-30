@@ -128,10 +128,7 @@ var phoneObj = "data:model/obj;base64,IyAzZHMgTWF4IFdhdmVmcm9udCBPQkogRXhwb3J0ZX
 var script = {
   name: 'Mockup',
   props: {
-    screenImg: {
-      type: String,
-    },
-    video: {
+    screen: {
       type: null,
     },
     lightClr: {
@@ -185,11 +182,11 @@ var script = {
 
           let texture;
 
-          if (props.screenImg) {
+          if (typeof props.screen === 'string') {
             const loader = new THREE.TextureLoader();
-            texture = loader.load(props.screenImg);
+            texture = loader.load(props.screen);
           } else {
-            texture = new THREE.VideoTexture(props.video);
+            texture = new THREE.VideoTexture(props.screen);
           }
 
           texture.anisotropy = renderer.capabilities.getMaxAnisotropy();

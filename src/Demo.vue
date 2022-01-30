@@ -7,11 +7,11 @@
       <Mockup
         v-if="vidReady"
         class="mockup"
-        :video="$refs.video"
+        :screen="$refs.video"
       />
       <Mockup
         class="mockup"
-        screenImg="screen.png"
+        screen="screen.png"
         :rotation="{
           x: -0.2,
           y: -0.3,
