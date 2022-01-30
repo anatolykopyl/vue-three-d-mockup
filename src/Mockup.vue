@@ -21,7 +21,9 @@ export default {
   props: {
     screenImg: {
       type: String,
-      required: true,
+    },
+    video: {
+      type: null,
     },
     lightClr: {
       type: String,
@@ -30,6 +32,14 @@ export default {
     phoneClr: {
       type: String,
       default: 'white',
+    },
+    rotation: {
+      type: Object,
+      default: () => ({
+        x: -0.2,
+        y: 0.3,
+        z: 0.06,
+      }),
     },
   },
   setup(props) {
@@ -64,8 +74,15 @@ export default {
           // const geometry = new THREE.PlaneGeometry(width, height);
           const geometry = roundedPlane(width, height, radius);
 
-          const loader = new THREE.TextureLoader();
-          const texture = loader.load(props.screenImg);
+          let texture;
+
+          if (props.screenImg) {
+            const loader = new THREE.TextureLoader();
+            texture = loader.load(props.screenImg);
+          } else {
+            texture = new THREE.VideoTexture(props.video);
+          }
+
           texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
           const material = new THREE.MeshLambertMaterial({ map: texture });
@@ -119,11 +136,7 @@ export default {
             y: 0,
             z: 0,
           },
-          rotation: {
-            x: -0.2,
-            y: 0.3,
-            z: 0.06,
-          },
+          rotation: props.rotation,
         });
         phone.startFloat();
         scene.add(phone);
