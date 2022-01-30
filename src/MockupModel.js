@@ -6,6 +6,7 @@ export default class MockupModel extends Group {
 
     this.animation = this.floatAnim;
     this.goingHome = false;
+    this.homeTimeout = null;
 
     this.home = home;
     this.reset();
@@ -52,7 +53,7 @@ export default class MockupModel extends Group {
       this.rotSpeed.y = (this.home.rotation.y - this.rotation.y) / rT;
       this.rotSpeed.z = (this.home.rotation.z - this.rotation.z) / rT;
 
-      setTimeout(() => {
+      this.homeTimeout = setTimeout(() => {
         this.goingHome = false;
         this.reset();
         this.startFloat();

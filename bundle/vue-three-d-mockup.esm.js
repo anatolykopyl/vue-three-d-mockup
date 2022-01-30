@@ -9,6 +9,7 @@ class MockupModel extends Group {
 
     this.animation = this.floatAnim;
     this.goingHome = false;
+    this.homeTimeout = null;
 
     this.home = home;
     this.reset();
@@ -55,7 +56,7 @@ class MockupModel extends Group {
       this.rotSpeed.y = (this.home.rotation.y - this.rotation.y) / rT;
       this.rotSpeed.z = (this.home.rotation.z - this.rotation.z) / rT;
 
-      setTimeout(() => {
+      this.homeTimeout = setTimeout(() => {
         this.goingHome = false;
         this.reset();
         this.startFloat();
@@ -277,7 +278,11 @@ var script = {
     }
 
     function handleMouseEnter() {
-      if (phone) { phone.animation = phone.lookAtAnim; }
+      if (phone) {
+        phone.animation = phone.lookAtAnim;
+        phone.goingHome = false;
+        clearTimeout(phone.homeTimeout);
+      }
     }
 
     function handleMouseLeave() {

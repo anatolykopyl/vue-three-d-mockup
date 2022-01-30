@@ -169,7 +169,11 @@ export default {
     }
 
     function handleMouseEnter() {
-      if (phone) { phone.animation = phone.lookAtAnim; }
+      if (phone) {
+        phone.animation = phone.lookAtAnim;
+        phone.goingHome = false;
+        clearTimeout(phone.homeTimeout);
+      }
     }
 
     function handleMouseLeave() {
