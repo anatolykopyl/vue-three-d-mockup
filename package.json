@@ -1,9 +1,12 @@
 {
   "name": "vue-three-d-mockup",
   "version": "0.1.0",
-  "private": true,
   "author": "Anatoly Kopyl <akopyl@radner.ru>",
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anatolykopyl/vue-three-d-mockup.git"
+  },
   "main": "bundle/vue-three-d-mockup.esm.js",
   "browser": {
     "./sfc": "src/Mockup.vue"
