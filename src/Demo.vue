@@ -21,6 +21,10 @@
         z: -0.06,
       }]"
     />
+    <!-- <Mockup
+      class="mockup"
+      :screen="require('./assets/screen.png')"
+    /> -->
 
     <video
       src="@/assets/screen.mp4"

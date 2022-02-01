@@ -194,7 +194,7 @@ export default {
 
       if (phones.length) {
         phones.forEach((phone) => {
-          phone.animation(deltaTime, { x: mouseX, y: mouseY, z: camera.position.z });
+          phone.animation(deltaTime, { x: mouseX / 2, y: mouseY / 2, z: camera.position.z });
         });
       }
 
