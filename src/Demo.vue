@@ -3,22 +3,25 @@
     <h1>
       vue-three-d-mockup
     </h1>
-    <div class="showcase">
-      <Mockup
-        v-if="vidReady"
-        class="mockup"
-        :screen="$refs.video"
-      />
-      <Mockup
-        class="mockup"
-        :screen="require('./assets/screen.png')"
-        :rotation="{
-          y: -0.3,
-          z: -0.06,
-        }"
-        phoneClr="black"
-      />
-    </div>
+
+    <Mockup
+      v-if="vidReady"
+      class="mockup"
+      :screen="[$refs.video, require('./assets/screen.png')]"
+      :position="[
+        {
+          x: -50
+        },
+        {
+          x: 50
+        },
+      ]"
+      :rotation="[{}, {
+        y: -0.3,
+        z: -0.06,
+      }]"
+      phoneClr="black"
+    />
 
     <video
       src="@/assets/screen.mp4"
@@ -67,14 +70,8 @@ video {
   visibility: hidden;
 }
 
-.showcase {
-  display: flex;
-  justify-content: space-evenly;
-}
-
 .mockup {
-  width: 500px;
+  width: 800px;
   height: 500px;
-  margin: auto;
 }
 </style>

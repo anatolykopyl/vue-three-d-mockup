@@ -152,7 +152,7 @@ var script = {
     const container = ref(null);
     let camera;
     let scene;
-    let phone;
+    const phones = [];
     let renderer;
     let mouseX = 0;
     let mouseY = 0;
@@ -172,6 +172,21 @@ var script = {
       };
 
       const phoneInit = (screenSrc, home) => {
+        const phone = new MockupModel({
+          position: {
+            x: 0,
+            y: 0,
+            z: 0,
+            ...home.position,
+          },
+          rotation: {
+            x: -0.2,
+            y: 0.3,
+            z: 0.06,
+            ...home.rotation,
+          },
+        });
+
         const screenInit = () => {
           const scale = 6;
           const width = scale * 9; const height = scale * 19.3;
@@ -236,31 +251,42 @@ var script = {
           );
         };
 
-        phone = new MockupModel({
-          position: {
-            x: 0,
-            y: 0,
-            z: 0,
-            ...home.position,
-          },
-          rotation: {
-            x: -0.2,
-            y: 0.3,
-            z: 0.06,
-            ...home.rotation,
-          },
-        });
         phone.startFloat();
         scene.add(phone);
         screenInit();
         bodyInit();
+
+        return phone;
       };
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(container.value.clientWidth, container.value.clientHeight);
 
       environmentInit();
-      phoneInit(props.screen, { position: props.position, rotation: props.rotation });
+
+      if (Array.isArray(props.screen)) {
+        for (let i = 0; i <= props.screen.length - 1; i += 1) {
+          phones.push(
+            phoneInit(
+              props.screen[i],
+              {
+                position: props.position[i],
+                rotation: props.rotation[i],
+              },
+            ),
+          );
+        }
+      } else {
+        phones.push(
+          phoneInit(
+            props.screen,
+            {
+              position: props.position,
+              rotation: props.rotation,
+            },
+          ),
+        );
+      }
 
       container.value.appendChild(renderer.domElement);
     }
@@ -273,23 +299,31 @@ var script = {
 
       requestAnimationFrame(animate);
 
-      if (phone) {
-        phone.animation(deltaTime, { x: mouseX, y: mouseY, z: camera.position.z });
+      if (phones.length) {
+        phones.forEach((phone) => {
+          phone.animation(deltaTime, { x: mouseX, y: mouseY, z: camera.position.z });
+        });
       }
 
       renderer.render(scene, camera);
     }
 
     function handleMouseEnter() {
-      if (phone) {
-        phone.animation = phone.lookAtAnim;
-        phone.goingHome = false;
-        clearTimeout(phone.homeTimeout);
+      if (phones.length) {
+        phones.forEach((phone) => {
+          phone.animation = phone.lookAtAnim;
+          phone.goingHome = false;
+          clearTimeout(phone.homeTimeout);
+        });
       }
     }
 
     function handleMouseLeave() {
-      if (phone) { phone.animation = phone.homeAnim; }
+      if (phones.length) {
+        phones.forEach((phone) => {
+          phone.animation = phone.homeAnim;
+        });
+      }
     }
 
     function handleMouseMove(event) {
