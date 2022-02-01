@@ -30,6 +30,10 @@ export default {
       type: String,
       default: 'white',
     },
+    position: {
+      type: Object,
+      default: () => ({}),
+    },
     rotation: {
       type: Object,
       default: () => ({}),
@@ -58,7 +62,7 @@ export default {
         camera.position.set(0, 0, 200);
       };
 
-      const phoneInit = () => {
+      const phoneInit = (screenSrc, home) => {
         const screenInit = () => {
           const scale = 6;
           const width = scale * 9; const height = scale * 19.3;
@@ -69,11 +73,11 @@ export default {
 
           let texture;
 
-          if (typeof props.screen === 'string') {
+          if (typeof screenSrc === 'string') {
             const loader = new THREE.TextureLoader();
-            texture = loader.load(props.screen);
+            texture = loader.load(screenSrc);
           } else {
-            texture = new THREE.VideoTexture(props.screen);
+            texture = new THREE.VideoTexture(screenSrc);
           }
 
           texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -128,12 +132,13 @@ export default {
             x: 0,
             y: 0,
             z: 0,
+            ...home.position,
           },
           rotation: {
             x: -0.2,
             y: 0.3,
             z: 0.06,
-            ...props.rotation,
+            ...home.rotation,
           },
         });
         phone.startFloat();
@@ -146,7 +151,7 @@ export default {
       renderer.setSize(container.value.clientWidth, container.value.clientHeight);
 
       environmentInit();
-      phoneInit();
+      phoneInit(props.screen, { position: props.position, rotation: props.rotation });
 
       container.value.appendChild(renderer.domElement);
     }
