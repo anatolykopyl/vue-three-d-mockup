@@ -1,10 +1,4 @@
-import { Group, Vector3 } from 'three';
-
-function xyz(target, source) {
-  target.x = source.x;
-  target.y = source.y;
-  target.z = source.z;
-}
+import { Group, Vector3, Euler } from 'three';
 
 export default class MockupModel extends Group {
   constructor(home) {
@@ -14,31 +8,20 @@ export default class MockupModel extends Group {
     this.goingHome = false;
     this.homeTimeout = null;
 
-    this.home = home;
+    this.home = {
+      position: new Vector3(home.position.x, home.position.y, home.position.z),
+      rotation: new Euler(home.rotation.x, home.rotation.y, home.rotation.z),
+    };
     this.reset();
   }
 
   reset() {
-    xyz(this.position, this.home.position);
-    xyz(this.rotation, this.home.rotation);
+    this.position.copy(this.home.position);
+    this.rotation.copy(this.home.rotation);
 
-    this.speed = {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
-
-    this.rotSpeed = {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
-
-    this.acceleration = {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
+    this.speed = new Vector3();
+    this.rotSpeed = new Euler();
+    this.acceleration = new Vector3();
   }
 
   homeAnim(dt) {
@@ -46,13 +29,10 @@ export default class MockupModel extends Group {
       this.goingHome = true;
 
       const rT = 1;
-      this.speed.x = (this.home.position.x - this.position.x) / rT;
-      this.speed.y = (this.home.position.y - this.position.y) / rT;
-      this.speed.z = (this.home.position.z - this.position.z) / rT;
-
-      this.rotSpeed.x = (this.home.rotation.x - this.rotation.x) / rT;
-      this.rotSpeed.y = (this.home.rotation.y - this.rotation.y) / rT;
-      this.rotSpeed.z = (this.home.rotation.z - this.rotation.z) / rT;
+      this.speed.subVectors(this.home.position, this.position).multiplyScalar(1 / rT);
+      const rotSpeedAsVec3 = this.rotSpeed.toVector3();
+      rotSpeedAsVec3.subVectors(this.home.rotation, this.rotation).multiplyScalar(1 / rT);
+      this.rotSpeed.setFromVector3(rotSpeedAsVec3);
 
       this.homeTimeout = setTimeout(() => {
         this.goingHome = false;
@@ -61,13 +41,8 @@ export default class MockupModel extends Group {
       }, rT * 1000);
     }
 
-    this.position.x += this.speed.x * dt;
-    this.position.y += this.speed.y * dt;
-    this.position.z += this.speed.z * dt;
-
-    this.rotation.x += this.rotSpeed.x * dt;
-    this.rotation.y += this.rotSpeed.y * dt;
-    this.rotation.z += this.rotSpeed.z * dt;
+    this.position.addScaledVector(this.speed, dt);
+    this.rotation.setFromVector3(this.rotation.toVector3().addScaledVector(this.rotSpeed, dt));
   }
 
   startFloat() {
@@ -96,10 +71,7 @@ export default class MockupModel extends Group {
   }
 
   lookAtAnim(dt, { x, y, z }) {
-    const target = new Vector3();
-    target.x = x - this.position.x;
-    target.y = y - this.position.y;
-    target.z = z - this.position.z;
+    const target = new Vector3(x, y, z).sub(this.position);
     this.lookAt(target);
   }
 }
