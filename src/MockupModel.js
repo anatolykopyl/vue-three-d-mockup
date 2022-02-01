@@ -1,5 +1,11 @@
 import { Group, Vector3 } from 'three';
 
+function xyz(target, source) {
+  target.x = source.x;
+  target.y = source.y;
+  target.z = source.z;
+}
+
 export default class MockupModel extends Group {
   constructor(home) {
     super();
@@ -13,13 +19,8 @@ export default class MockupModel extends Group {
   }
 
   reset() {
-    this.position.x = this.home.position.x;
-    this.position.y = this.home.position.y;
-    this.position.z = this.home.position.z;
-
-    this.rotation.x = this.home.rotation.x;
-    this.rotation.y = this.home.rotation.y;
-    this.rotation.z = this.home.rotation.z;
+    xyz(this.position, this.home.position);
+    xyz(this.rotation, this.home.rotation);
 
     this.speed = {
       x: 0,

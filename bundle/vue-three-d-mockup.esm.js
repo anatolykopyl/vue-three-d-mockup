@@ -3,6 +3,12 @@ import * as THREE from 'three';
 import { Group, Vector3, Shape, ShapeBufferGeometry } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
+function xyz(target, source) {
+  target.x = source.x;
+  target.y = source.y;
+  target.z = source.z;
+}
+
 class MockupModel extends Group {
   constructor(home) {
     super();
@@ -16,13 +22,8 @@ class MockupModel extends Group {
   }
 
   reset() {
-    this.position.x = this.home.position.x;
-    this.position.y = this.home.position.y;
-    this.position.z = this.home.position.z;
-
-    this.rotation.x = this.home.rotation.x;
-    this.rotation.y = this.home.rotation.y;
-    this.rotation.z = this.home.rotation.z;
+    xyz(this.position, this.home.position);
+    xyz(this.rotation, this.home.rotation);
 
     this.speed = {
       x: 0,
