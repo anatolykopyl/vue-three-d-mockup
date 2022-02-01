@@ -1,7 +1,7 @@
 import { Shape, ShapeBufferGeometry } from 'three';
 
 export default function roundedPlane(width, height, radius) {
-  const x = 1; const y = 1;
+  const x = 0; const y = 0;
   const shape = new Shape();
 
   shape.moveTo(x, y + radius);

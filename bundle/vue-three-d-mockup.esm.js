@@ -99,6 +99,9 @@ class MockupModel extends Group {
 
   lookAtAnim(dt, { x, y, z }) {
     const target = new Vector3();
+    // const boxTarget = new Vector3();
+    // const boundingBox = new Box3().setFromObject(this);
+    // boundingBox.getSize(boxTarget);
     target.x = x;
     target.y = y;
     target.z = z;
@@ -107,7 +110,7 @@ class MockupModel extends Group {
 }
 
 function roundedPlane(width, height, radius) {
-  const x = 1; const y = 1;
+  const x = 0; const y = 0;
   const shape = new Shape();
 
   shape.moveTo(x, y + radius);
@@ -228,9 +231,8 @@ var script = {
 
           recomputeUVs();
 
-          screen.translateX(-width / 2);
-          screen.translateY(-height / 2);
-          screen.translateZ(6);
+          screen.translateZ(3.6);
+          screen.geometry.center();
           phone.add(screen);
         };
 
@@ -239,14 +241,17 @@ var script = {
           loader.load(
             phoneObj,
             (body) => {
+              const bodyGroup = new THREE.Object3D();
               body.traverse((child) => {
                 if (child instanceof THREE.Mesh) {
                   child.material = new THREE.MeshLambertMaterial({ color: props.phoneClr });
+                  child.geometry.center();
+                  const mesh = new THREE.Mesh(child.geometry, child.material);
+                  bodyGroup.add(mesh);
                 }
               });
 
-              body.position.y = -60;
-              phone.add(body);
+              phone.add(bodyGroup);
             },
           );
         };

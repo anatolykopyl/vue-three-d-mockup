@@ -20,7 +20,6 @@
         y: -0.3,
         z: -0.06,
       }]"
-      phoneClr="black"
     />
 
     <video

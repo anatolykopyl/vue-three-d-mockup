@@ -96,6 +96,9 @@ export default class MockupModel extends Group {
 
   lookAtAnim(dt, { x, y, z }) {
     const target = new Vector3();
+    // const boxTarget = new Vector3();
+    // const boundingBox = new Box3().setFromObject(this);
+    // boundingBox.getSize(boxTarget);
     target.x = x;
     target.y = y;
     target.z = z;

@@ -119,9 +119,8 @@ export default {
 
           recomputeUVs();
 
-          screen.translateX(-width / 2);
-          screen.translateY(-height / 2);
-          screen.translateZ(6);
+          screen.translateZ(3.6);
+          screen.geometry.center();
           phone.add(screen);
         };
 
@@ -130,14 +129,17 @@ export default {
           loader.load(
             phoneObj,
             (body) => {
+              const bodyGroup = new THREE.Object3D();
               body.traverse((child) => {
                 if (child instanceof THREE.Mesh) {
                   child.material = new THREE.MeshLambertMaterial({ color: props.phoneClr });
+                  child.geometry.center();
+                  const mesh = new THREE.Mesh(child.geometry, child.material);
+                  bodyGroup.add(mesh);
                 }
               });
 
-              body.position.y = -60;
-              phone.add(body);
+              phone.add(bodyGroup);
             },
           );
         };
