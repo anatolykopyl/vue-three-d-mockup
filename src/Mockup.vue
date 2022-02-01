@@ -32,11 +32,7 @@ export default {
     },
     rotation: {
       type: Object,
-      default: () => ({
-        x: -0.2,
-        y: 0.3,
-        z: 0.06,
-      }),
+      default: () => ({}),
     },
   },
   setup(props) {
@@ -133,7 +129,12 @@ export default {
             y: 0,
             z: 0,
           },
-          rotation: props.rotation,
+          rotation: {
+            x: -0.2,
+            y: 0.3,
+            z: 0.06,
+            ...props.rotation,
+          },
         });
         phone.startFloat();
         scene.add(phone);

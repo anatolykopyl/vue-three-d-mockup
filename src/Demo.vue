@@ -13,7 +13,6 @@
         class="mockup"
         :screen="require('./assets/screen.png')"
         :rotation="{
-          x: -0.2,
           y: -0.3,
           z: -0.06,
         }"
