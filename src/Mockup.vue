@@ -38,6 +38,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    linearFilter: {
+      type: Boolean,
+    },
   },
   setup(props) {
     const container = ref(null);
@@ -98,7 +101,11 @@ export default {
           texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
           const material = new THREE.MeshLambertMaterial({ map: texture });
-          // material.map.minFilter = THREE.LinearFilter;
+
+          if (props.linearFilter) {
+            material.map.minFilter = THREE.LinearFilter;
+          }
+
           const screen = new THREE.Mesh(geometry, material);
 
           const recomputeUVs = () => {
