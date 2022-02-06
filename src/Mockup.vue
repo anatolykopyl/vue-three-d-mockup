@@ -142,6 +142,9 @@ export default {
                   child.material = new THREE.MeshLambertMaterial({ color: props.phoneClr });
                   child.geometry.center();
                   const mesh = new THREE.Mesh(child.geometry, child.material);
+                  const scale = 8.6;
+                  mesh.rotateX(Math.PI / 2);
+                  mesh.scale.set(-scale, scale, scale);
                   bodyGroup.add(mesh);
                 }
               });
