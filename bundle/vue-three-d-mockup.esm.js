@@ -331,6 +331,13 @@ var script = {
       mouseY = -(event.clientY - rect.top - rect.height / 2);
     }
 
+    function handleTouchMove(event) {
+      event.preventDefault();
+      const rect = container.value.getBoundingClientRect();
+      mouseX = event.touches[0].clientX - rect.left - rect.width / 2;
+      mouseY = -(event.touches[0].clientY - rect.top - rect.height / 2);
+    }
+
     onMounted(() => {
       init();
       animate(0);
@@ -341,6 +348,7 @@ var script = {
       handleMouseEnter,
       handleMouseLeave,
       handleMouseMove,
+      handleTouchMove,
     };
   },
 };
@@ -350,7 +358,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ref: "container",
     onMouseenter: _cache[0] || (_cache[0] = (...args) => ($setup.handleMouseEnter && $setup.handleMouseEnter(...args))),
     onMouseleave: _cache[1] || (_cache[1] = (...args) => ($setup.handleMouseLeave && $setup.handleMouseLeave(...args))),
-    onMousemove: _cache[2] || (_cache[2] = (...args) => ($setup.handleMouseMove && $setup.handleMouseMove(...args)))
+    onMousemove: _cache[2] || (_cache[2] = (...args) => ($setup.handleMouseMove && $setup.handleMouseMove(...args))),
+    onTouchstart: _cache[3] || (_cache[3] = (...args) => ($setup.handleMouseEnter && $setup.handleMouseEnter(...args))),
+    onTouchend: _cache[4] || (_cache[4] = (...args) => ($setup.handleMouseLeave && $setup.handleMouseLeave(...args))),
+    onTouchmove: _cache[5] || (_cache[5] = (...args) => ($setup.handleTouchMove && $setup.handleTouchMove(...args)))
   }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */))
 }
 
