@@ -4,6 +4,10 @@
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
+
+    @touchstart="handleMouseEnter"
+    @touchend="handleMouseLeave"
+    @touchmove="handleTouchMove"
   />
 </template>
 
@@ -235,6 +239,13 @@ export default {
       mouseY = -(event.clientY - rect.top - rect.height / 2);
     }
 
+    function handleTouchMove(event) {
+      event.preventDefault();
+      const rect = container.value.getBoundingClientRect();
+      mouseX = event.touches[0].clientX - rect.left - rect.width / 2;
+      mouseY = -(event.touches[0].clientY - rect.top - rect.height / 2);
+    }
+
     onMounted(() => {
       init();
       animate(0);
@@ -245,6 +256,7 @@ export default {
       handleMouseEnter,
       handleMouseLeave,
       handleMouseMove,
+      handleTouchMove,
     };
   },
 };

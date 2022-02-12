@@ -1,6 +1,6 @@
 {
   "name": "vue-three-d-mockup",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "📱 A 3D phone mockup component to showcase your apps",
   "author": "Anatoly Kopyl <akopyl@radner.ru>",
   "keywords": ["vue", "mockup-generator", "threejs", "design", "mockup"],
