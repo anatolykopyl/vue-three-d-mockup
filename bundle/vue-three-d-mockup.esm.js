@@ -90,15 +90,19 @@ function roundedPlane(width, height, radius) {
   shape.quadraticCurveTo(x, y + height, x + radius, y + height);
 
   shape.lineTo(width / 2 - nW / 2 - nH, y + height);
-  shape.quadraticCurveTo(width / 2 - nW / 2, y + height, width / 2 - nW / 2, y + height - nH / 2);
+  shape.quadraticCurveTo(
+    width / 2 - nW / 2, y + height, width / 2 - nW / 2, y + height - nH / 10,
+  );
   shape.quadraticCurveTo(
     width / 2 - nW / 2, y + height - nH, width / 2 - nW / 2 + nH, y + height - nH,
   );
   shape.lineTo(width / 2 + nW / 2 - nH, y + height - nH);
   shape.quadraticCurveTo(
-    width / 2 + nW / 2, y + height - nH, width / 2 + nW / 2, y + height - nH / 2,
+    width / 2 + nW / 2, y + height - nH, width / 2 + nW / 2, y + height - nH / 10,
   );
-  shape.quadraticCurveTo(width / 2 + nW / 2, y + height, width / 2 + nW / 2 + nH, y + height);
+  shape.quadraticCurveTo(
+    width / 2 + nW / 2, y + height, width / 2 + nW / 2 + nH, y + height,
+  );
 
   shape.lineTo(x + width - radius, y + height);
   shape.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
