@@ -14,5 +14,6 @@ jobs:
           git config --global user.name "anatolykopyl"
           git init
           git add -A
+          git commit -m "Deploy to GitHub Pages"
           git push -f https://anatolykopyl:${{ secrets.GITHUB_TOKEN }}@github.com/anatolykopyl/vue-three-d-mockup.git master:gh-pages
         shell: bash
