@@ -22,7 +22,7 @@ import screenImage from './assets/screen.png';
 
   <div class="buttons">
     <a 
-      href="/vue-three-d-mockup/guide"
+      href="/vue-three-d-mockup/guide/"
       class="buttons__button"
     >
       Guide
