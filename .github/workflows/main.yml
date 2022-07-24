@@ -10,8 +10,7 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn docs:build
-          cd docs
-          ln -s index.html 404.html
+          cd docs/.vitepress/dist
           git config --global user.name "anatolykopyl"
           git init
           git add -A
