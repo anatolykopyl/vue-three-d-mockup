@@ -1,46 +1,58 @@
 {
   "name": "vue-three-d-mockup",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "📱 A 3D phone mockup component to showcase your apps",
   "author": "Anatoly Kopyl <akopyl@radner.ru>",
-  "keywords": ["vue", "mockup-generator", "threejs", "design", "mockup"],
+  "keywords": [
+    "vue",
+    "mockup-generator",
+    "threejs",
+    "design",
+    "mockup"
+  ],
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/anatolykopyl/vue-three-d-mockup.git"
   },
-  "main": "bundle/vue-three-d-mockup.esm.js",
+  "type": "module",
   "browser": {
     "./sfc": "src/Mockup.vue"
   },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/my-lib.umd.cjs",
+  "module": "./dist/my-lib.js",
+  "exports": {
+    ".": {
+      "import": "./dist/my-lib.js",
+      "require": "./dist/my-lib.umd.cjs"
+    }
+  },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build-bundle": "rollup -c",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "pre-commit": [
-    "build-bundle"
+    "build"
   ],
   "dependencies": {
-    "core-js": "^3.6.5",
+    "@vitejs/plugin-vue": "^3.0.1",
     "three": "^0.137.5",
+    "vite": "^3.0.2",
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-url": "^6.1.0",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-airbnb": "^5.0.2",
-    "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^7.0.0",
-    "file-loader": "^6.2.0",
     "pre-commit": "^1.2.2",
-    "rollup-plugin-vue": "^6.0.0"
+    "vitepress": "^1.0.0-alpha.4"
   }
 }

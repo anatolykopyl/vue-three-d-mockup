@@ -18,7 +18,7 @@ import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import MockupModel from './MockupModel';
 import roundedPlane from './utils/roundedPlane';
-import phoneObj from './assets/iphone.obj';
+const phoneObj = new URL('./assets/iphone.obj', import.meta.url).href;
 
 export default {
   name: 'Mockup',

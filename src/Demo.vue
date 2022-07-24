@@ -7,7 +7,7 @@
     <Mockup
       v-if="vidReady"
       class="mockup"
-      :screen="[$refs.video, require('./assets/screen.png')]"
+      :screen="[$refs.video, screenImage]"
       :position="[
         {
           x: -50
@@ -27,7 +27,7 @@
     /> -->
 
     <video
-      src="@/assets/screen.mp4"
+      :src="screenVideo"
       ref="video"
       @canplay="vidReady = true"
       muted
@@ -39,6 +39,8 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
+import screenImage from './assets/screen.png';
+import screenVideo from './assets/screen.mp4';
 
 export default {
   data() {
@@ -49,6 +51,12 @@ export default {
   components: {
     Mockup: defineAsyncComponent(() => import('./Mockup.vue')),
   },
+  setup() {
+    return {
+      screenImage,
+      screenVideo,
+    };
+  }
 };
 </script>
 
