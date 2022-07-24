@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'Vue 3D Mockup',
   description: '📱 A 3D phone mockup component to showcase your apps',
+  base: '/vue-three-d-mockup/',
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide' },
