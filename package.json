@@ -19,7 +19,9 @@
   "browser": {
     "./sfc": "src/Mockup.vue"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/my-lib.umd.cjs",
   "module": "./dist/my-lib.js",
   "exports": {
@@ -31,7 +33,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "pre-commit": [
     "build"
@@ -47,6 +52,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^7.0.0",
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^1.2.2",
+    "vitepress": "^1.0.0-alpha.4"
   }
 }
