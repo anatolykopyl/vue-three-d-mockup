@@ -1,14 +1,19 @@
-name: Build Vue
+name: Build Docs
 on: [push]
 jobs:
   build_vue:
     runs-on: ubuntu-latest
-    name: Build Vue
+    name: Build Docs
     steps:
-    - uses: actions/checkout@v2
-    - id: Build-Vue
-      uses: xRealNeon/VuePagesAction@1.0.1
-      with:
-        username: 'anatolykopyl'
-        reponame: 'vue-three-d-mockup'
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - id: Build-Docs
+        run: |
+          yarn install --frozen-lockfile
+          yarn docs:build
+          cd docs
+          ln -s index.html 404.html
+          git config --global user.name "anatolykopyl"
+          git init
+          git add -A
+          git push -f https://anatolykopyl:${{ secrets.GITHUB_TOKEN }}@github.com/anatolykopyl/vue-three-d-mockup.git master:gh-pages
+        shell: bash
