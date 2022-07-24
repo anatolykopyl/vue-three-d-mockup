@@ -4,6 +4,8 @@ export default defineConfig({
   title: 'Vue 3D Mockup',
   description: '📱 A 3D phone mockup component to showcase your apps',
   base: '/vue-three-d-mockup/',
+  lang: 'en-US',
+  lastUpdated: true,
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide' },
