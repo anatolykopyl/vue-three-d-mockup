@@ -15,7 +15,7 @@
 import { ref, onMounted } from 'vue';
 
 import * as THREE from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { OBJLoader } from './utils/OBJLoader';
 import MockupModel from './MockupModel';
 import roundedPlane from './utils/roundedPlane';
 const phoneObj = new URL('./assets/iphone.obj', import.meta.url).href;

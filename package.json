@@ -15,7 +15,6 @@
     "type": "git",
     "url": "https://github.com/anatolykopyl/vue-three-d-mockup.git"
   },
-  "type": "module",
   "browser": {
     "./sfc": "src/Mockup.vue"
   },
