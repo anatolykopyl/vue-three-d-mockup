@@ -167,6 +167,7 @@ export default {
       };
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(window.devicePixelRatio)
       renderer.setSize(container.value.clientWidth, container.value.clientHeight);
 
       environmentInit();
