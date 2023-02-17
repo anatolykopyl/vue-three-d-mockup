@@ -16735,7 +16735,7 @@ const dj = (n, M) => {
         };
         return l.startFloat(), t.add(l), C(), E(), l;
       };
-      if (N = new KM({ antialias: !0, alpha: !0 }), N.setSize(M.value.clientWidth, M.value.clientHeight), y(), Array.isArray(n.screen))
+      if (N = new KM({ antialias: !0, alpha: !0 }), N.setPixelRatio(window.devicePixelRatio), N.setSize(M.value.clientWidth, M.value.clientHeight), y(), Array.isArray(n.screen))
         for (let c = 0; c <= n.screen.length - 1; c += 1)
           e.push(a(n.screen[c], {
             position: n.position[c],
